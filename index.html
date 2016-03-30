@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>任务十八：基础JavaScript练习（一）</title>
+	<style>
+		.queue {
+			height: 40px;
+			padding: 10px 0;
+		}
+		.queue > .item {
+			display: inline-block;
+			width: 40px;
+			height: 40px;
+			margin-right: 8px;
+			line-height: 40px;
+			text-align: center;
+			color: #FFFFFF;
+			background-color: red;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="operate">
+			<input type="text" id="input">
+			<button id="leftIn">左侧入</button>
+			<button id="rightIn">右侧入</button>
+			<button id="leftOut">左侧出</button>
+			<button id="rightOut">左侧出</button>
+		</div>
+		<div id="queue" class="queue">
+		</div>
+	</div>
+	<script>
+		(function() {
+			// code start
+
+
+			var li = _id('leftIn'),
+				ri = _id('rightIn'),
+				lo = _id('leftOut'),
+				ro = _id('rightOut');
+
+			var input = _id('input'),
+				queue = _id('queue');
+
+			var _queue = [];
+			[li, ri].forEach(function(elem) {
+				elem.onclick = function() {
+					var val = input.value,
+						id = this.id;
+					if(!_check(val)) {
+						alert('输入的的内容不能为空且为数字');
+						return;
+					}
+					if(id === 'leftIn') _unshift(val);
+					if(id === 'rightIn') _push(val);
+				}
+			});
+
+			[lo, ro].forEach(function(elem) {
+				elem.onclick = function() {
+					var id = this.id;
+					if(id === 'leftOut') _shift();
+					if(id === 'rightOut') _pop();
+				}
+			});
+
+			queue.onclick = function(e) {
+				var _target = e.target;
+				if(_target.className === 'item') {
+					queue.removeChild(_target);
+				}
+			}
+
+			function viewShift() {
+				queue.removeChild(queue.firstChild);
+			}
+			function viewPop() {
+				queue.removeChild(queue.lastChild);
+			}
+			function viewUnshift(v) {
+				var sp = document.createElement('span');
+				sp.className = 'item';
+				sp.innerHTML = v;
+				queue.insertBefore(sp, queue.firstChild);
+			}
+
+			function viewPush(v) {
+				var sp = document.createElement('span');
+				sp.className = 'item';
+				sp.innerHTML = v;
+				queue.appendChild(sp);
+			}
+			function _shift() {
+				viewShift();
+				_queue.shift();
+			}
+
+			function _pop() {
+				viewPop();
+				_queue.pop();
+			}
+			function _unshift(v) {
+				viewUnshift(v);
+				_queue.unshift(v);
+			}
+			function _push(v) {
+				viewPush(v);
+				_queue.push(v);
+			}
+
+			function _check(str) {
+				return str && /^\d+$/g.test(str);
+			}
+
+			function _id(id) {
+				return document.getElementById(id);
+			}
+		})();
+
+	</script>
+</body>
+</html>
